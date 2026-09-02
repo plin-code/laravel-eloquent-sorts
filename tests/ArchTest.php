@@ -2,14 +2,26 @@
 
 declare(strict_types=1);
 
-arch()->preset()->php();
+arch('the orders do not depend on spatie')
+    ->expect('PlinCode\EloquentSorts\Orders')
+    ->not->toUse('Spatie');
 
-arch()->preset()->security();
+arch('the support classes do not depend on spatie')
+    ->expect('PlinCode\EloquentSorts\Support')
+    ->not->toUse('Spatie');
 
-arch('it will not use dd(), ddd(), env(), or exit()')
-    ->expect(['dd', 'ddd', 'env', 'exit'])
-    ->each->not->toBeUsed();
+arch('the package does not depend on the host application')
+    ->expect('PlinCode\EloquentSorts')
+    ->not->toUse('App');
 
-arch('the package source declares strict types')
+arch('every class is final')
+    ->expect('PlinCode\EloquentSorts')
+    ->toBeFinal();
+
+arch('nothing is left behind')
+    ->expect(['dd', 'dump', 'ray', 'var_dump'])
+    ->not->toBeUsed();
+
+arch('strict types everywhere')
     ->expect('PlinCode\EloquentSorts')
     ->toUseStrictTypes();
