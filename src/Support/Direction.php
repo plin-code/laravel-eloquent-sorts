@@ -8,6 +8,8 @@ use InvalidArgumentException;
 
 final class Direction
 {
+    private function __construct() {}
+
     /**
      * Laravel validates the direction passed to orderBy(), but not the one
      * passed to orderByRaw(). Every order in this package goes through here

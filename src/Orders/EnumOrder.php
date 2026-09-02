@@ -11,6 +11,8 @@ use PlinCode\EloquentSorts\Support\Direction;
 
 final class EnumOrder
 {
+    private function __construct() {}
+
     /**
      * Order rows by an arbitrary map of column value to sort position,
      * built as a CASE expression.

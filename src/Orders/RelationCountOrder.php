@@ -12,6 +12,8 @@ use PlinCode\EloquentSorts\Support\Direction;
 
 final class RelationCountOrder
 {
+    private function __construct() {}
+
     /**
      * Order rows by how many related rows point at them, through a
      * correlated COUNT subquery. Rows with no related records count as

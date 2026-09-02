@@ -12,6 +12,8 @@ use PlinCode\EloquentSorts\Support\Direction;
 
 final class RelationOrder
 {
+    private function __construct() {}
+
     /**
      * Order rows by a column of a related table, through a correlated
      * subquery. No join, so the result set is not multiplied.
