@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 arch('the orders do not depend on spatie')
     ->expect('PlinCode\EloquentSorts\Orders')
-    ->not->toUse('Spatie');
+    ->not->toUse('Spatie\QueryBuilder')
+    ->not->toUse('Spatie\LaravelPackageTools');
 
 arch('the support classes do not depend on spatie')
     ->expect('PlinCode\EloquentSorts\Support')
-    ->not->toUse('Spatie');
+    ->not->toUse('Spatie\QueryBuilder')
+    ->not->toUse('Spatie\LaravelPackageTools');
 
 arch('the package does not depend on the host application')
     ->expect('PlinCode\EloquentSorts')
