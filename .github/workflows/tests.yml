@@ -64,8 +64,8 @@ jobs:
 
       - name: Test Suite
         if: runner.os != 'Windows'
-        run: composer test:unit
+        run: vendor/bin/pest --parallel --exclude-group=integration
 
       - name: Test Suite (Windows)
         if: runner.os == 'Windows'
-        run: vendor/bin/pest
+        run: vendor/bin/pest --exclude-group=integration
