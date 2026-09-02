@@ -66,9 +66,9 @@ it('keeps rows whose foreign key is null, wherever the driver puts them', functi
     $query = Book::query();
     RelationOrder::apply($query, 'authors', 'author_id');
 
-    // Dove finisce un NULL dipende dal driver: PostgreSQL lo mette in coda su
-    // ASC, MySQL e SQLite in testa. Il pacchetto non normalizza la cosa, quindi
-    // il test asserisce che la riga non sparisca, non dove finisca.
+    // Where a NULL lands depends on the driver: PostgreSQL puts it last on
+    // ASC, MySQL and SQLite put it first. The package does not normalize
+    // this, so the test asserts the row does not disappear, not where it lands.
     expect($query->pluck('status')->all())
         ->toHaveCount(2)
         ->toContain('has author', 'orphan');
@@ -83,9 +83,9 @@ it('stops resolving a sort value when the related row is soft deleted', function
     $query = Book::query();
     RelationOrder::apply($query, 'tags', 'tag_code', 'label', 'asc', 'code', 'deleted_at');
 
-    // Il tag cancellato non produce piu' un valore, quindi la sua riga ordina
-    // per NULL, e la posizione del NULL e' dialect specific. Vedi il test qui
-    // sopra: e' un limite dichiarato del pacchetto, non un bug.
+    // The deleted tag no longer produces a value, so its row sorts by NULL,
+    // and the position of NULL is dialect specific. See the test above: this
+    // is a declared limit of the package, not a bug.
     $expected = driver() === 'pgsql'
         ? ['visible tag', 'deleted tag']
         : ['deleted tag', 'visible tag'];

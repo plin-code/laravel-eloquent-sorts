@@ -10,6 +10,6 @@ composer.lock
 .idea
 .vscode
 
-# documenti di pianificazione, non contenuto del pacchetto
+# planning documents, not package content
 /PLAN.md
 /IMPLEMENTATION.md

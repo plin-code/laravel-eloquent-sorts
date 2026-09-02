@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('name');
         });
 
-        // Chiave primaria non standard: serve a provare il parametro ownerKey
-        // di RelationOrder, che nell'originale dell'host era hardcoded a 'id'.
+        // Non standard primary key: proves the ownerKey parameter of
+        // RelationOrder, which was hardcoded to 'id' in the host's original.
         Schema::create('tags', function (Blueprint $table): void {
             $table->string('code')->primary();
             $table->string('label');
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->unsignedInteger('author_id')->nullable();
             $table->string('tag_code')->nullable();
             $table->string('status')->nullable();
-            // `order` e' parola riservata in MySQL e PostgreSQL: e' la colonna
-            // su cui si prova il wrap del grammar in EnumOrder.
+            // `order` is a reserved word in MySQL and PostgreSQL: it is the
+            // column used to prove the grammar wrap in EnumOrder.
             $table->string('order')->nullable();
             $table->timestamp('deleted_at')->nullable();
         });
