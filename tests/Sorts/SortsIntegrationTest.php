@@ -67,7 +67,7 @@ it('sorts by a custom enum order through spatie', function () {
     Book::create(['status' => 'draft']);
 
     $results = QueryBuilder::for(Book::query(), queryFor('status'))
-        ->allowedSorts(AllowedSort::custom('status', new EnumSorter(['draft' => 1, 'paid' => 2])))
+        ->allowedSorts(AllowedSort::custom('status', new EnumSorter(['draft' => 1, 'paid' => 2], 'status')))
         ->pluck('status')
         ->all();
 
