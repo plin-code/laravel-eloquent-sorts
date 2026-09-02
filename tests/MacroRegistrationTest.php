@@ -9,7 +9,7 @@ use PlinCode\EloquentSorts\Orders\RelationOrder;
 use Workbench\App\Models\Author;
 use Workbench\App\Models\Book;
 
-it('registers the three macros by default', function () {
+it('registers the three macros by default', function (): void {
     // hasMacro() su Eloquent\Builder e' un metodo di istanza: il controllo
     // statico e' hasGlobalMacro(). L'Eloquent Builder non usa il trait
     // Macroable, si gestisce le macro da solo via __callStatic.
@@ -18,7 +18,7 @@ it('registers the three macros by default', function () {
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeTrue();
 });
 
-it('produces the same sql as the order class, for orderByRelation', function () {
+it('produces the same sql as the order class, for orderByRelation', function (): void {
     $viaMacro = Book::query()->orderByRelation('authors', 'author_id');
 
     $viaClass = Book::query();
@@ -27,7 +27,7 @@ it('produces the same sql as the order class, for orderByRelation', function () 
     expect($viaMacro->toSql())->toBe($viaClass->toSql());
 });
 
-it('produces the same sql as the order class, for orderByCount', function () {
+it('produces the same sql as the order class, for orderByCount', function (): void {
     $viaMacro = Author::query()->orderByCount('books', 'author_id');
 
     $viaClass = Author::query();
@@ -36,7 +36,7 @@ it('produces the same sql as the order class, for orderByCount', function () {
     expect($viaMacro->toSql())->toBe($viaClass->toSql());
 });
 
-it('produces the same sql as the order class, for orderByEnum', function () {
+it('produces the same sql as the order class, for orderByEnum', function (): void {
     $map = ['draft' => 1, 'paid' => 2];
 
     $viaMacro = Book::query()->orderByEnum('status', $map);
@@ -48,7 +48,7 @@ it('produces the same sql as the order class, for orderByEnum', function () {
         ->and($viaMacro->getBindings())->toBe($viaClass->getBindings());
 });
 
-it('passes the soft delete column through the macro', function () {
+it('passes the soft delete column through the macro', function (): void {
     $query = Book::query()->orderByRelation('authors', 'author_id', 'name', 'asc', 'id', 'deleted_at');
 
     expect($query->toSql())->toContain('deleted_at');

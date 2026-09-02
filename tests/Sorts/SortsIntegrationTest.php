@@ -20,7 +20,7 @@ function queryFor(string $sort): QueryBuilderRequest
     return QueryBuilderRequest::fromRequest(Request::create("/?sort={$sort}"));
 }
 
-it('sorts by a relation column through spatie', function () {
+it('sorts by a relation column through spatie', function (): void {
     $calvino = Author::create(['name' => 'Calvino']);
     $buzzati = Author::create(['name' => 'Buzzati']);
     Book::create(['author_id' => $calvino->id, 'status' => 'c']);
@@ -34,7 +34,7 @@ it('sorts by a relation column through spatie', function () {
     expect($results)->toBe(['b', 'c']);
 })->group('integration');
 
-it('sorts by a relation column descending through spatie', function () {
+it('sorts by a relation column descending through spatie', function (): void {
     $calvino = Author::create(['name' => 'Calvino']);
     $buzzati = Author::create(['name' => 'Buzzati']);
     Book::create(['author_id' => $calvino->id, 'status' => 'c']);
@@ -48,7 +48,7 @@ it('sorts by a relation column descending through spatie', function () {
     expect($results)->toBe(['c', 'b']);
 })->group('integration');
 
-it('sorts by a relation count through spatie', function () {
+it('sorts by a relation count through spatie', function (): void {
     $two = Author::create(['name' => 'two books']);
     $none = Author::create(['name' => 'no books']);
     Book::create(['author_id' => $two->id]);
@@ -62,7 +62,7 @@ it('sorts by a relation count through spatie', function () {
     expect($results)->toBe(['two books', 'no books']);
 })->group('integration');
 
-it('sorts by a relation count ascending through spatie', function () {
+it('sorts by a relation count ascending through spatie', function (): void {
     $two = Author::create(['name' => 'two books']);
     $none = Author::create(['name' => 'no books']);
     Book::create(['author_id' => $two->id]);
@@ -76,7 +76,7 @@ it('sorts by a relation count ascending through spatie', function () {
     expect($results)->toBe(['no books', 'two books']);
 })->group('integration');
 
-it('sorts by a custom enum order through spatie', function () {
+it('sorts by a custom enum order through spatie', function (): void {
     Book::create(['status' => 'paid']);
     Book::create(['status' => 'draft']);
 
@@ -88,7 +88,7 @@ it('sorts by a custom enum order through spatie', function () {
     expect($results)->toBe(['draft', 'paid']);
 })->group('integration');
 
-it('falls back to the requested property when the enum sorter has no column', function () {
+it('falls back to the requested property when the enum sorter has no column', function (): void {
     Book::create(['status' => 'paid']);
     Book::create(['status' => 'draft']);
 
@@ -100,7 +100,7 @@ it('falls back to the requested property when the enum sorter has no column', fu
     expect($results)->toBe(['draft', 'paid']);
 })->group('integration');
 
-it('uses an explicit column over the requested property', function () {
+it('uses an explicit column over the requested property', function (): void {
     Book::create(['status' => 'zzz', 'order' => 'second']);
     Book::create(['status' => 'aaa', 'order' => 'first']);
 
@@ -115,14 +115,14 @@ it('uses an explicit column over the requested property', function () {
     expect($results)->toBe(['aaa', 'zzz']);
 })->group('integration');
 
-it('honours the soft delete column through the sorter', function () {
+it('honours the soft delete column through the sorter', function (): void {
     $query = Book::query();
     (new RelationSorter('authors', 'author_id', 'name', 'id', 'deleted_at'))($query, false, 'author');
 
     expect($query->toSql())->toContain('deleted_at');
 });
 
-it('produces the exact same sql and bindings as RelationOrder::apply()', function () {
+it('produces the exact same sql and bindings as RelationOrder::apply()', function (): void {
     $viaSorter = Book::query();
     (new RelationSorter('authors', 'author_id', 'name', 'id', 'deleted_at'))($viaSorter, true, 'author');
 
@@ -133,7 +133,7 @@ it('produces the exact same sql and bindings as RelationOrder::apply()', functio
         ->and($viaSorter->getBindings())->toBe($viaOrder->getBindings());
 });
 
-it('produces the exact same sql and bindings as RelationCountOrder::apply()', function () {
+it('produces the exact same sql and bindings as RelationCountOrder::apply()', function (): void {
     $viaSorter = Author::query();
     (new RelationCountSorter('books', 'author_id', 'id', 'deleted_at'))($viaSorter, true, 'books');
 
@@ -144,7 +144,7 @@ it('produces the exact same sql and bindings as RelationCountOrder::apply()', fu
         ->and($viaSorter->getBindings())->toBe($viaOrder->getBindings());
 });
 
-it('produces the exact same sql and bindings as EnumOrder::apply()', function () {
+it('produces the exact same sql and bindings as EnumOrder::apply()', function (): void {
     $viaSorter = Book::query();
     (new EnumSorter(['draft' => 1, 'paid' => 2], null, 7))($viaSorter, true, 'status');
 
@@ -155,7 +155,7 @@ it('produces the exact same sql and bindings as EnumOrder::apply()', function ()
         ->and($viaSorter->getBindings())->toBe($viaOrder->getBindings());
 });
 
-it('uses the explicit column instead of the property for EnumOrder equivalence', function () {
+it('uses the explicit column instead of the property for EnumOrder equivalence', function (): void {
     $viaSorter = Book::query();
     (new EnumSorter(['first' => 1, 'second' => 2], 'order'))($viaSorter, false, 'anything');
 

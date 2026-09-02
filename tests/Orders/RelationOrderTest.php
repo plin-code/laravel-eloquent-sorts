@@ -16,7 +16,7 @@ function seedAuthorsAndBooks(): void
     Book::create(['author_id' => $buzzati->id, 'status' => 'b']);
 }
 
-it('orders by a column of the related table, ascending', function () {
+it('orders by a column of the related table, ascending', function (): void {
     seedAuthorsAndBooks();
 
     $query = Book::query();
@@ -25,7 +25,7 @@ it('orders by a column of the related table, ascending', function () {
     expect($query->pluck('status')->all())->toBe(['b', 'c']);
 })->group('integration');
 
-it('orders by a column of the related table, descending', function () {
+it('orders by a column of the related table, descending', function (): void {
     seedAuthorsAndBooks();
 
     $query = Book::query();
@@ -34,7 +34,7 @@ it('orders by a column of the related table, descending', function () {
     expect($query->pluck('status')->all())->toBe(['c', 'b']);
 })->group('integration');
 
-it('orders by a custom sort column', function () {
+it('orders by a custom sort column', function (): void {
     $a = Author::create(['name' => 'zzz']);
     $b = Author::create(['name' => 'aaa']);
     Book::create(['author_id' => $a->id, 'status' => 'first_inserted']);
@@ -46,7 +46,7 @@ it('orders by a custom sort column', function () {
     expect($query->pluck('status')->all())->toBe(['first_inserted', 'second_inserted']);
 })->group('integration');
 
-it('uses a custom owner key on the related table', function () {
+it('uses a custom owner key on the related table', function (): void {
     Tag::create(['code' => 'zz', 'label' => 'Zoology']);
     Tag::create(['code' => 'aa', 'label' => 'Architecture']);
     Book::create(['tag_code' => 'zz', 'status' => 'zoology book']);
@@ -58,7 +58,7 @@ it('uses a custom owner key on the related table', function () {
     expect($query->pluck('status')->all())->toBe(['architecture book', 'zoology book']);
 })->group('integration');
 
-it('keeps rows whose foreign key is null, wherever the driver puts them', function () {
+it('keeps rows whose foreign key is null, wherever the driver puts them', function (): void {
     $author = Author::create(['name' => 'Calvino']);
     Book::create(['author_id' => $author->id, 'status' => 'has author']);
     Book::create(['author_id' => null, 'status' => 'orphan']);
@@ -74,7 +74,7 @@ it('keeps rows whose foreign key is null, wherever the driver puts them', functi
         ->toContain('has author', 'orphan');
 })->group('integration');
 
-it('stops resolving a sort value when the related row is soft deleted', function () {
+it('stops resolving a sort value when the related row is soft deleted', function (): void {
     Tag::create(['code' => 'aa', 'label' => 'Architecture']);
     Tag::create(['code' => 'zz', 'label' => 'Zoology', 'deleted_at' => now()]);
     Book::create(['tag_code' => 'aa', 'status' => 'visible tag']);
@@ -93,20 +93,20 @@ it('stops resolving a sort value when the related row is soft deleted', function
     expect($query->pluck('status')->all())->toBe($expected);
 })->group('integration');
 
-it('applies no soft delete filter by default', function () {
+it('applies no soft delete filter by default', function (): void {
     $query = Book::query();
     RelationOrder::apply($query, 'authors', 'author_id');
 
     expect($query->toSql())->not->toContain('deleted_at');
 });
 
-it('adds the soft delete filter only when asked', function () {
+it('adds the soft delete filter only when asked', function (): void {
     $query = Book::query();
     RelationOrder::apply($query, 'authors', 'author_id', 'name', 'asc', 'id', 'deleted_at');
 
     expect($query->toSql())->toContain('deleted_at');
 });
 
-it('rejects a direction that is not asc or desc', function () {
+it('rejects a direction that is not asc or desc', function (): void {
     RelationOrder::apply(Book::query(), 'authors', 'author_id', 'name', 'sideways');
 })->throws(InvalidArgumentException::class);

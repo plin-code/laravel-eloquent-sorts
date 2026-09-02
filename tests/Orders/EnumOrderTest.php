@@ -18,7 +18,7 @@ function makeBooks(string ...$statuses): void
     }
 }
 
-it('orders by the given map, ascending', function () {
+it('orders by the given map, ascending', function (): void {
     makeBooks('paid', 'draft', 'sent');
 
     $query = Book::query();
@@ -27,7 +27,7 @@ it('orders by the given map, ascending', function () {
     expect($query->pluck('status')->all())->toBe(['draft', 'sent', 'paid']);
 })->group('integration');
 
-it('orders by the given map, descending', function () {
+it('orders by the given map, descending', function (): void {
     makeBooks('paid', 'draft', 'sent');
 
     $query = Book::query();
@@ -36,7 +36,7 @@ it('orders by the given map, descending', function () {
     expect($query->pluck('status')->all())->toBe(['paid', 'sent', 'draft']);
 })->group('integration');
 
-it('sends values outside the map to the fallback order', function () {
+it('sends values outside the map to the fallback order', function (): void {
     makeBooks('unknown', 'draft');
 
     $query = Book::query();
@@ -45,7 +45,7 @@ it('sends values outside the map to the fallback order', function () {
     expect($query->pluck('status')->all())->toBe(['draft', 'unknown']);
 })->group('integration');
 
-it('honours a custom fallback order', function () {
+it('honours a custom fallback order', function (): void {
     makeBooks('unknown', 'paid');
 
     $query = Book::query();
@@ -54,7 +54,7 @@ it('honours a custom fallback order', function () {
     expect($query->pluck('status')->all())->toBe(['unknown', 'paid']);
 })->group('integration');
 
-it('strips a table prefix from the column', function () {
+it('strips a table prefix from the column', function (): void {
     makeBooks('paid', 'draft');
 
     $query = Book::query();
@@ -63,7 +63,7 @@ it('strips a table prefix from the column', function () {
     expect($query->pluck('status')->all())->toBe(['draft', 'paid']);
 })->group('integration');
 
-it('binds values instead of interpolating them', function () {
+it('binds values instead of interpolating them', function (): void {
     $query = Book::query();
     EnumOrder::apply($query, 'status', ["O'Brien" => 1, '100%' => 2]);
 
@@ -72,7 +72,7 @@ it('binds values instead of interpolating them', function () {
         ->and($query->getBindings())->toContain("O'Brien", '100%');
 });
 
-it('does not break on a value containing a single quote', function () {
+it('does not break on a value containing a single quote', function (): void {
     makeBooks("O'Brien", 'draft');
 
     $query = Book::query();
@@ -81,11 +81,11 @@ it('does not break on a value containing a single quote', function () {
     expect($query->pluck('status')->all())->toBe(["O'Brien", 'draft']);
 })->group('integration');
 
-it('rejects a direction that is not asc or desc', function () {
+it('rejects a direction that is not asc or desc', function (): void {
     EnumOrder::apply(Book::query(), 'status', statusMap(), 'asc; DROP TABLE books');
 })->throws(InvalidArgumentException::class);
 
-it('accepts a direction in any casing', function () {
+it('accepts a direction in any casing', function (): void {
     makeBooks('paid', 'draft');
 
     $query = Book::query();
@@ -94,7 +94,7 @@ it('accepts a direction in any casing', function () {
     expect($query->pluck('status')->all())->toBe(['paid', 'draft']);
 })->group('integration');
 
-it('wraps a column name that is a reserved word', function () {
+it('wraps a column name that is a reserved word', function (): void {
     Book::create(['order' => 'second']);
     Book::create(['order' => 'first']);
 
@@ -104,7 +104,7 @@ it('wraps a column name that is a reserved word', function () {
     expect($query->pluck('order')->all())->toBe(['first', 'second']);
 })->group('integration');
 
-it('handles a map with integer keys', function () {
+it('handles a map with integer keys', function (): void {
     Book::create(['status' => '10']);
     Book::create(['status' => '2']);
 
@@ -114,7 +114,7 @@ it('handles a map with integer keys', function () {
     expect($query->pluck('status')->all())->toBe(['2', '10']);
 })->group('integration');
 
-it('leaves the query untouched for an empty map', function () {
+it('leaves the query untouched for an empty map', function (): void {
     $query = Book::query();
     $before = $query->toSql();
 

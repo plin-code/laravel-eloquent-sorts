@@ -8,7 +8,7 @@ use PlinCode\EloquentSorts\Orders\RelationOrder;
 use PlinCode\EloquentSorts\Sorts\RelationSorter;
 use Workbench\App\Models\Book;
 
-beforeEach(function () {
+beforeEach(function (): void {
     // Le macro vivono in una proprieta' statica di Builder e sopravvivono al
     // boot successivo. Eloquent\Builder non ha flushMacros() (non usa il trait
     // Macroable), quindi l'unico modo di azzerarle e' la reflection.
@@ -16,7 +16,7 @@ beforeEach(function () {
     $macros->setValue(null, []);
 });
 
-it('registers no macro when the config says so', function () {
+it('registers no macro when the config says so', function (): void {
     config()->set('eloquent-sorts.register_macros', false);
 
     $this->app->register(EloquentSortsServiceProvider::class, true);
@@ -26,7 +26,7 @@ it('registers no macro when the config says so', function () {
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeFalse();
 });
 
-it('keeps the order classes working with macros disabled', function () {
+it('keeps the order classes working with macros disabled', function (): void {
     config()->set('eloquent-sorts.register_macros', false);
 
     $query = Book::query();
@@ -35,7 +35,7 @@ it('keeps the order classes working with macros disabled', function () {
     expect($query->toSql())->toContain('order by');
 });
 
-it('keeps the sort classes working with macros disabled', function () {
+it('keeps the sort classes working with macros disabled', function (): void {
     config()->set('eloquent-sorts.register_macros', false);
 
     $query = Book::query();

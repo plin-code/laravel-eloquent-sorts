@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PlinCode\EloquentSorts\Orders;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use PlinCode\EloquentSorts\Support\Direction;
 
@@ -22,9 +23,9 @@ final class EnumOrder
      * bound, because PostgreSQL cannot infer the type of a parameter sitting
      * in the THEN branch of a CASE inside ORDER BY.
      *
-     * @param  Builder<covariant \Illuminate\Database\Eloquent\Model>  $query
+     * @param  Builder<Model>  $query
      * @param  array<string|int, int>  $casesMap  [value => sort position]
-     * @return Builder<covariant \Illuminate\Database\Eloquent\Model>
+     * @return Builder<Model>
      *
      * @throws InvalidArgumentException when $direction is not asc or desc
      */
@@ -43,7 +44,7 @@ final class EnumOrder
 
         if (str_contains($column, '.')) {
             $parts = explode('.', $column);
-            $column = (string) end($parts);
+            $column = end($parts);
         }
 
         $wrapped = $query->getGrammar()->wrap(
@@ -59,7 +60,7 @@ final class EnumOrder
         }
 
         return $query->orderByRaw(
-            "CASE {$wrapped}{$cases} ELSE ".(int) $fallbackOrder." END {$direction}",
+            "CASE {$wrapped}{$cases} ELSE ".$fallbackOrder." END {$direction}",
             $bindings,
         );
     }

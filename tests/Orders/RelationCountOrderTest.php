@@ -9,7 +9,7 @@ use Workbench\App\Models\Book;
 function seedAuthorsWithBookCounts(): void
 {
     $two = Author::create(['name' => 'two books']);
-    $none = Author::create(['name' => 'no books']);
+    Author::create(['name' => 'no books']);
     $one = Author::create(['name' => 'one book']);
 
     Book::create(['author_id' => $two->id]);
@@ -17,7 +17,7 @@ function seedAuthorsWithBookCounts(): void
     Book::create(['author_id' => $one->id]);
 }
 
-it('orders by the count of related rows, ascending', function () {
+it('orders by the count of related rows, ascending', function (): void {
     seedAuthorsWithBookCounts();
 
     $query = Author::query();
@@ -26,7 +26,7 @@ it('orders by the count of related rows, ascending', function () {
     expect($query->pluck('name')->all())->toBe(['no books', 'one book', 'two books']);
 })->group('integration');
 
-it('orders by the count of related rows, descending', function () {
+it('orders by the count of related rows, descending', function (): void {
     seedAuthorsWithBookCounts();
 
     $query = Author::query();
@@ -35,7 +35,7 @@ it('orders by the count of related rows, descending', function () {
     expect($query->pluck('name')->all())->toBe(['two books', 'one book', 'no books']);
 })->group('integration');
 
-it('counts zero rather than null for a row with no related records', function () {
+it('counts zero rather than null for a row with no related records', function (): void {
     Author::create(['name' => 'no books']);
 
     $query = Author::query();
@@ -44,7 +44,7 @@ it('counts zero rather than null for a row with no related records', function ()
     expect($query->pluck('name')->all())->toBe(['no books']);
 })->group('integration');
 
-it('uses a custom primary key on the queried table', function () {
+it('uses a custom primary key on the queried table', function (): void {
     $a = Author::create(['name' => 'a']);
     Book::create(['author_id' => $a->id]);
 
@@ -54,7 +54,7 @@ it('uses a custom primary key on the queried table', function () {
     expect($query->pluck('name')->all())->toBe(['a']);
 })->group('integration');
 
-it('ignores soft deleted related rows when a column is given', function () {
+it('ignores soft deleted related rows when a column is given', function (): void {
     $one = Author::create(['name' => 'one live book']);
     $none = Author::create(['name' => 'only deleted books']);
 
@@ -67,20 +67,20 @@ it('ignores soft deleted related rows when a column is given', function () {
     expect($query->pluck('name')->all())->toBe(['one live book', 'only deleted books']);
 })->group('integration');
 
-it('applies no soft delete filter by default', function () {
+it('applies no soft delete filter by default', function (): void {
     $query = Author::query();
     RelationCountOrder::apply($query, 'books', 'author_id');
 
     expect($query->toSql())->not->toContain('deleted_at');
 });
 
-it('adds the soft delete filter only when asked', function () {
+it('adds the soft delete filter only when asked', function (): void {
     $query = Author::query();
     RelationCountOrder::apply($query, 'books', 'author_id', 'asc', 'id', 'deleted_at');
 
     expect($query->toSql())->toContain('deleted_at');
 });
 
-it('rejects a direction that is not asc or desc', function () {
+it('rejects a direction that is not asc or desc', function (): void {
     RelationCountOrder::apply(Author::query(), 'books', 'author_id', 'upwards');
 })->throws(InvalidArgumentException::class);
