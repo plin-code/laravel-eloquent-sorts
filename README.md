@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/plin-code/laravel-eloquent-sorts/main/art/banner.png" alt="Laravel Eloquent Sorts">
+</p>
+
 <div align="center">
     <h1>Laravel Eloquent Sorts</h1>
 </div>
