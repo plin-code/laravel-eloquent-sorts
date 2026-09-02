@@ -171,7 +171,7 @@ The `orderByRelation`, `orderByCount` and `orderByEnum` macros live on `Illumina
 
 | | Supported |
 | --- | --- |
-| PHP | 8.3, 8.4, 8.5 |
+| PHP | 8.4, 8.5 |
 | Laravel | 12, 13 (`illuminate/database` and `illuminate/support` `^12.0 \|\| ^13.0`) |
 | spatie/laravel-query-builder | `^7.0`, not `^6.x`: version 6 does not make `Sort` generic, and `Sorts\` relies on `@implements Sort<Model>` for static analysis |
 | Drivers proved by the test suite | SQLite, MySQL 8, PostgreSQL 16 |
