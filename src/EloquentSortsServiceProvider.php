@@ -23,7 +23,7 @@ final class EloquentSortsServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        if (config('eloquent-sorts.register_macros', true) !== true) {
+        if (! config('eloquent-sorts.register_macros', true)) {
             return;
         }
 

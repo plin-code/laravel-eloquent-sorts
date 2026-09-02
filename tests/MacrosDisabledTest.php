@@ -26,6 +26,19 @@ it('registers no macro when the config says so', function (): void {
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeFalse();
 });
 
+it('registers the macros for a truthy non boolean config value', function (): void {
+    // env() only casts the literal strings "true", "false", "empty" and
+    // "null": ELOQUENT_SORTS_REGISTER_MACROS=1 reaches config() as the
+    // string "1", which must still be treated as enabled.
+    config()->set('eloquent-sorts.register_macros', '1');
+
+    $this->app->register(EloquentSortsServiceProvider::class, true);
+
+    expect(Builder::hasGlobalMacro('orderByRelation'))->toBeTrue()
+        ->and(Builder::hasGlobalMacro('orderByCount'))->toBeTrue()
+        ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeTrue();
+});
+
 it('keeps the order classes working with macros disabled', function (): void {
     config()->set('eloquent-sorts.register_macros', false);
 
