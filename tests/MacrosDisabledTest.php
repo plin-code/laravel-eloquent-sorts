@@ -9,9 +9,9 @@ use PlinCode\EloquentSorts\Sorts\RelationSorter;
 use Workbench\App\Models\Book;
 
 beforeEach(function (): void {
-    // Le macro vivono in una proprieta' statica di Builder e sopravvivono al
-    // boot successivo. Eloquent\Builder non ha flushMacros() (non usa il trait
-    // Macroable), quindi l'unico modo di azzerarle e' la reflection.
+    // The macros live in a static property of Builder and survive across a
+    // later boot. Eloquent\Builder has no flushMacros() (it does not use the
+    // Macroable trait), so reflection is the only way to reset them.
     $macros = new ReflectionProperty(Builder::class, 'macros');
     $macros->setValue(null, []);
 });
