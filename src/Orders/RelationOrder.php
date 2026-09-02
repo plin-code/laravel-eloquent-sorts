@@ -20,11 +20,11 @@ final class RelationOrder
      * into raw SQL, so the grammar quotes them, reserved words included.
      *
      * @param  Builder<Model>  $query
-     * @param  string  $relationTable  table holding the value to sort on
+     * @param  string  $relatedTable  table holding the value to sort on
      * @param  string  $foreignKey  column on the queried table pointing at it
-     * @param  string  $sortColumn  column of $relationTable to sort by
+     * @param  string  $sortColumn  column of $relatedTable to sort by
      * @param  string  $direction  asc or desc
-     * @param  string  $ownerKey  key of $relationTable the foreign key points at
+     * @param  string  $ownerKey  key of $relatedTable the foreign key points at
      * @param  string|null  $softDeleteColumn  when given, related rows with a
      *                                         non null value here are ignored
      * @return Builder<Model>
@@ -33,7 +33,7 @@ final class RelationOrder
      */
     public static function apply(
         Builder $query,
-        string $relationTable,
+        string $relatedTable,
         string $foreignKey,
         string $sortColumn = 'name',
         string $direction = 'asc',
@@ -45,16 +45,16 @@ final class RelationOrder
         $model = $query->getModel();
 
         $subquery = DB::connection($model->getConnectionName())
-            ->table($relationTable)
+            ->table($relatedTable)
             ->select($sortColumn)
             ->whereColumn(
-                "{$relationTable}.{$ownerKey}",
+                "{$relatedTable}.{$ownerKey}",
                 "{$model->getTable()}.{$foreignKey}",
             )
             ->limit(1);
 
         if ($softDeleteColumn !== null) {
-            $subquery->whereNull("{$relationTable}.{$softDeleteColumn}");
+            $subquery->whereNull("{$relatedTable}.{$softDeleteColumn}");
         }
 
         return $query->orderBy($subquery, $direction);

@@ -15,7 +15,7 @@ use Spatie\QueryBuilder\Sorts\Sort;
 final readonly class RelationSorter implements Sort
 {
     public function __construct(
-        private string $relationTable,
+        private string $relatedTable,
         private string $foreignKey,
         private string $sortColumn = 'name',
         private string $ownerKey = 'id',
@@ -29,7 +29,7 @@ final readonly class RelationSorter implements Sort
     {
         RelationOrder::apply(
             $query,
-            $this->relationTable,
+            $this->relatedTable,
             $this->foreignKey,
             $this->sortColumn,
             $descending ? 'desc' : 'asc',

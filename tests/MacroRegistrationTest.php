@@ -10,11 +10,11 @@ use Workbench\App\Models\Author;
 use Workbench\App\Models\Book;
 
 it('registers the three macros by default', function (): void {
-    // hasMacro() su Eloquent\Builder e' un metodo di istanza: il controllo
-    // statico e' hasGlobalMacro(). L'Eloquent Builder non usa il trait
-    // Macroable, si gestisce le macro da solo via __callStatic.
+    // hasMacro() on Eloquent\Builder is an instance method: the static check
+    // is hasGlobalMacro(). Eloquent Builder does not use the Macroable
+    // trait, it manages its macros on its own via __callStatic.
     expect(Builder::hasGlobalMacro('orderByRelation'))->toBeTrue()
-        ->and(Builder::hasGlobalMacro('orderByCount'))->toBeTrue()
+        ->and(Builder::hasGlobalMacro('orderByRelationCount'))->toBeTrue()
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeTrue();
 });
 
@@ -27,8 +27,8 @@ it('produces the same sql as the order class, for orderByRelation', function ():
     expect($viaMacro->toSql())->toBe($viaClass->toSql());
 });
 
-it('produces the same sql as the order class, for orderByCount', function (): void {
-    $viaMacro = Author::query()->orderByCount('books', 'author_id');
+it('produces the same sql as the order class, for orderByRelationCount', function (): void {
+    $viaMacro = Author::query()->orderByRelationCount('books', 'author_id');
 
     $viaClass = Author::query();
     RelationCountOrder::apply($viaClass, 'books', 'author_id');

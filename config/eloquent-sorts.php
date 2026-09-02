@@ -5,8 +5,8 @@ declare(strict_types=1);
 return [
 
     /*
-     | Register the orderByRelation, orderByCount and orderByEnum macros on
-     | Illuminate\Database\Eloquent\Builder.
+     | Register the orderByRelation, orderByRelationCount and orderByEnum
+     | macros on Illuminate\Database\Eloquent\Builder.
      |
      | Turning this off leaves the Orders\ and Sorts\ classes fully working:
      | only the macros disappear.

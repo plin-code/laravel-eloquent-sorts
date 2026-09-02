@@ -17,7 +17,7 @@ final readonly class RelationCountSorter implements Sort
     public function __construct(
         private string $relatedTable,
         private string $foreignKey,
-        private string $primaryKey = 'id',
+        private string $localKey = 'id',
         private ?string $softDeleteColumn = null,
     ) {}
 
@@ -31,7 +31,7 @@ final readonly class RelationCountSorter implements Sort
             $this->relatedTable,
             $this->foreignKey,
             $descending ? 'desc' : 'asc',
-            $this->primaryKey,
+            $this->localKey,
             $this->softDeleteColumn,
         );
     }

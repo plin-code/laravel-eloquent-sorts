@@ -28,7 +28,7 @@ final class EloquentSortsServiceProvider extends PackageServiceProvider
         }
 
         Builder::macro('orderByRelation', function (
-            string $relationTable,
+            string $relatedTable,
             string $foreignKey,
             string $sortColumn = 'name',
             string $direction = 'asc',
@@ -37,20 +37,20 @@ final class EloquentSortsServiceProvider extends PackageServiceProvider
         ): Builder {
             /** @var Builder<Model> $this */
             return RelationOrder::apply(
-                $this, $relationTable, $foreignKey, $sortColumn, $direction, $ownerKey, $softDeleteColumn,
+                $this, $relatedTable, $foreignKey, $sortColumn, $direction, $ownerKey, $softDeleteColumn,
             );
         });
 
-        Builder::macro('orderByCount', function (
+        Builder::macro('orderByRelationCount', function (
             string $relatedTable,
             string $foreignKey,
             string $direction = 'asc',
-            string $primaryKey = 'id',
+            string $localKey = 'id',
             ?string $softDeleteColumn = null,
         ): Builder {
             /** @var Builder<Model> $this */
             return RelationCountOrder::apply(
-                $this, $relatedTable, $foreignKey, $direction, $primaryKey, $softDeleteColumn,
+                $this, $relatedTable, $foreignKey, $direction, $localKey, $softDeleteColumn,
             );
         });
 

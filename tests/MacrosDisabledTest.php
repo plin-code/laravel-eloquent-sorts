@@ -22,7 +22,7 @@ it('registers no macro when the config says so', function (): void {
     $this->app->register(EloquentSortsServiceProvider::class, true);
 
     expect(Builder::hasGlobalMacro('orderByRelation'))->toBeFalse()
-        ->and(Builder::hasGlobalMacro('orderByCount'))->toBeFalse()
+        ->and(Builder::hasGlobalMacro('orderByRelationCount'))->toBeFalse()
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeFalse();
 });
 
@@ -35,7 +35,7 @@ it('registers the macros for a truthy non boolean config value', function (): vo
     $this->app->register(EloquentSortsServiceProvider::class, true);
 
     expect(Builder::hasGlobalMacro('orderByRelation'))->toBeTrue()
-        ->and(Builder::hasGlobalMacro('orderByCount'))->toBeTrue()
+        ->and(Builder::hasGlobalMacro('orderByRelationCount'))->toBeTrue()
         ->and(Builder::hasGlobalMacro('orderByEnum'))->toBeTrue();
 });
 

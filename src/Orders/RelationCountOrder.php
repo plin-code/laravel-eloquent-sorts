@@ -24,7 +24,7 @@ final class RelationCountOrder
      * @param  string  $relatedTable  table holding the rows to count
      * @param  string  $foreignKey  column of $relatedTable pointing back
      * @param  string  $direction  asc or desc
-     * @param  string  $primaryKey  key of the queried table it points at
+     * @param  string  $localKey  key of the queried table it points at
      * @param  string|null  $softDeleteColumn  when given, related rows with a
      *                                         non null value here are not counted
      * @return Builder<Model>
@@ -36,7 +36,7 @@ final class RelationCountOrder
         string $relatedTable,
         string $foreignKey,
         string $direction = 'asc',
-        string $primaryKey = 'id',
+        string $localKey = 'id',
         ?string $softDeleteColumn = null,
     ): Builder {
         $direction = Direction::normalise($direction);
@@ -48,7 +48,7 @@ final class RelationCountOrder
             ->selectRaw('COUNT(*)')
             ->whereColumn(
                 "{$relatedTable}.{$foreignKey}",
-                "{$model->getTable()}.{$primaryKey}",
+                "{$model->getTable()}.{$localKey}",
             );
 
         if ($softDeleteColumn !== null) {
