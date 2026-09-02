@@ -24,7 +24,9 @@ final class EnumOrder
      * in the THEN branch of a CASE inside ORDER BY.
      *
      * @param  Builder<Model>  $query
-     * @param  string  $column  column to sort by, optionally table qualified
+     * @param  string  $column  column to sort by; any table prefix is
+     *                          stripped and replaced with the queried
+     *                          model's own table, a foreign prefix is not honoured
      * @param  array<string|int, int>  $casesMap  [value => sort position]
      * @param  string  $direction  asc or desc
      * @param  int  $fallbackOrder  sort position for values missing from $casesMap

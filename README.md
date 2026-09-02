@@ -51,7 +51,7 @@ use PlinCode\EloquentSorts\Orders\RelationOrder;
 
 RelationOrder::apply(
     query: Book::query(),
-    relationTable: 'authors',
+    relatedTable: 'authors',
     foreignKey: 'author_id',
     sortColumn: 'name',
     direction: 'asc',
@@ -103,7 +103,7 @@ QueryBuilder::for(Book::class)
     ->get();
 ```
 
-Each sorter takes the same parameters as its `Orders\` counterpart, minus `$query` and `$direction`: spatie supplies both when it invokes the sort.
+`RelationSorter` and `RelationCountSorter` take the same parameters as their `Orders\` counterpart, minus `$query` and `$direction`: spatie supplies both when it invokes the sort. `EnumSorter` is the exception: its constructor takes `$casesMap` first and `$column` second, because `$column` is optional and, when omitted, falls back to the sort property spatie passes in. See the worked example below.
 
 ## Macros, and how to turn them off
 
@@ -111,7 +111,7 @@ When `config('eloquent-sorts.register_macros')` is true (the default), the servi
 
 ```php
 Book::query()->orderByRelation('authors', 'author_id')->get();
-Author::query()->orderByCount('books', 'author_id')->get();
+Author::query()->orderByRelationCount('books', 'author_id')->get();
 Invoice::query()->orderByEnum('status', ['draft' => 1, 'sent' => 2, 'paid' => 3])->get();
 ```
 
@@ -126,7 +126,7 @@ Pass the column explicitly to get the filter back:
 ```php
 RelationOrder::apply(
     query: Book::query(),
-    relationTable: 'authors',
+    relatedTable: 'authors',
     foreignKey: 'author_id',
     softDeleteColumn: 'deleted_at',
 );
@@ -159,17 +159,23 @@ EnumOrder::apply(Invoice::query(), 'status', InvoiceStatus::sortMap());
 
 Values that are not in the map fall back to `$fallbackOrder` (99 by default), which keeps unknown values last instead of erroring.
 
+An empty `$casesMap` leaves the query untouched: `EnumOrder::apply()` returns it unchanged, so `new EnumSorter([])` is a silent no-op sort when reached through spatie.
+
 ## Known limits
 
 Table and column names passed to `Orders\`, `Sorts\` and the macros are not validated against the schema. A typo surfaces only at query time, as a `QueryException` from the underlying driver, not as a package level exception.
 
 When a sort cannot resolve a value (a null foreign key, or a related row excluded by `softDeleteColumn`), that row sorts as `NULL`, and where `NULL` lands is dialect specific: PostgreSQL puts it last on ascending order, MySQL and SQLite put it first. The package does not normalize this, on purpose: hiding a driver difference behind a fixed position would be a silent assumption about a case the caller is better placed to decide.
 
+`EnumOrder`'s `$column` is always resolved against the queried model's own table: any `table.` prefix is stripped and replaced with that table, never honoured as given. Passing a foreign prefix, such as `authors.status` on a `Book` query, silently sorts by `books.status` instead. This usually fails loudly as a `QueryException` when the queried table has no such column, but if both tables happen to carry a column of that name, the caller gets a wrong sort with no signal.
+
+`RelationOrder`'s correlated subquery adds `limit(1)`, so when `$ownerKey` is not unique on the related table, the row picked to supply the sort value is arbitrary and driver dependent.
+
 ## Why this was not proposed upstream to spatie
 
 Relation sorting, relation count sorting and enum ordering are not omissions in `spatie/laravel-query-builder`, they are use cases the maintainers looked at and left to application code, as the evidence above shows: [issue #36](https://github.com/spatie/laravel-query-builder/issues/36) for relation sorting closed without a merge, no dedicated issue for relation count sorting because the core only ever treats counting as an include (`withCount`), and the enum case is already the textbook example of the custom `Sort` pattern the core exposes on purpose. None of the three is a bug, so none of them is a candidate for a pull request.
 
-The `orderByRelation`, `orderByCount` and `orderByEnum` macros live on `Illuminate\Database\Eloquent\Builder`, which is not a class spatie's package touches at all, so they were never in scope for an upstream contribution either.
+The `orderByRelation`, `orderByRelationCount` and `orderByEnum` macros live on `Illuminate\Database\Eloquent\Builder`, which is not a class spatie's package touches at all, so they were never in scope for an upstream contribution either.
 
 ## Compatibility
 
