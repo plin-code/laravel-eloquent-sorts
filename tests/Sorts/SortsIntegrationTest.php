@@ -62,12 +62,26 @@ it('sorts by a relation count through spatie', function () {
     expect($results)->toBe(['two books', 'no books']);
 })->group('integration');
 
+it('sorts by a relation count ascending through spatie', function () {
+    $two = Author::create(['name' => 'two books']);
+    $none = Author::create(['name' => 'no books']);
+    Book::create(['author_id' => $two->id]);
+    Book::create(['author_id' => $two->id]);
+
+    $results = QueryBuilder::for(Author::query(), queryFor('books'))
+        ->allowedSorts(AllowedSort::custom('books', new RelationCountSorter('books', 'author_id')))
+        ->pluck('name')
+        ->all();
+
+    expect($results)->toBe(['no books', 'two books']);
+})->group('integration');
+
 it('sorts by a custom enum order through spatie', function () {
     Book::create(['status' => 'paid']);
     Book::create(['status' => 'draft']);
 
-    $results = QueryBuilder::for(Book::query(), queryFor('status'))
-        ->allowedSorts(AllowedSort::custom('status', new EnumSorter(['draft' => 1, 'paid' => 2], 'status')))
+    $results = QueryBuilder::for(Book::query(), queryFor('rank'))
+        ->allowedSorts(AllowedSort::custom('rank', new EnumSorter(['draft' => 1, 'paid' => 2], 'status')))
         ->pluck('status')
         ->all();
 
