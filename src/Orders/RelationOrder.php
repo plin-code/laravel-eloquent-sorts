@@ -23,6 +23,7 @@ final class RelationOrder
      * @param  string  $relationTable  table holding the value to sort on
      * @param  string  $foreignKey  column on the queried table pointing at it
      * @param  string  $sortColumn  column of $relationTable to sort by
+     * @param  string  $direction  asc or desc
      * @param  string  $ownerKey  key of $relationTable the foreign key points at
      * @param  string|null  $softDeleteColumn  when given, related rows with a
      *                                         non null value here are ignored

@@ -17,6 +17,9 @@ final class RelationCountOrder
      * correlated COUNT subquery. Rows with no related records count as
      * zero, not null.
      *
+     * Identifiers are passed to the query builder rather than interpolated
+     * into raw SQL, so the grammar quotes them, reserved words included.
+     *
      * @param  Builder<Model>  $query
      * @param  string  $relatedTable  table holding the rows to count
      * @param  string  $foreignKey  column of $relatedTable pointing back
