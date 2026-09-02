@@ -23,6 +23,7 @@ final class RelationCountOrder
      * @param  Builder<Model>  $query
      * @param  string  $relatedTable  table holding the rows to count
      * @param  string  $foreignKey  column of $relatedTable pointing back
+     * @param  string  $direction  asc or desc
      * @param  string  $primaryKey  key of the queried table it points at
      * @param  string|null  $softDeleteColumn  when given, related rows with a
      *                                         non null value here are not counted

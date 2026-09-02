@@ -50,7 +50,7 @@ it('sorts by a relation column descending through spatie', function (): void {
 
 it('sorts by a relation count through spatie', function (): void {
     $two = Author::create(['name' => 'two books']);
-    $none = Author::create(['name' => 'no books']);
+    Author::create(['name' => 'no books']);
     Book::create(['author_id' => $two->id]);
     Book::create(['author_id' => $two->id]);
 
@@ -64,7 +64,7 @@ it('sorts by a relation count through spatie', function (): void {
 
 it('sorts by a relation count ascending through spatie', function (): void {
     $two = Author::create(['name' => 'two books']);
-    $none = Author::create(['name' => 'no books']);
+    Author::create(['name' => 'no books']);
     Book::create(['author_id' => $two->id]);
     Book::create(['author_id' => $two->id]);
 

@@ -24,7 +24,10 @@ final class EnumOrder
      * in the THEN branch of a CASE inside ORDER BY.
      *
      * @param  Builder<Model>  $query
+     * @param  string  $column  column to sort by, optionally table qualified
      * @param  array<string|int, int>  $casesMap  [value => sort position]
+     * @param  string  $direction  asc or desc
+     * @param  int  $fallbackOrder  sort position for values missing from $casesMap
      * @return Builder<Model>
      *
      * @throws InvalidArgumentException when $direction is not asc or desc
