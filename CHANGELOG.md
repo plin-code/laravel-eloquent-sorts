@@ -1,8 +1,3 @@
 # Release Notes
 
-## [Unreleased](https://github.com/plin-code/laravel-eloquent-sorts/compare/v0.1.0...1.x)
-
-
-## [v0.1.0](https://github.com/plin-code/laravel-eloquent-sorts/compare/...v0.1.0) - 202x-xx-xx
-
-Initial pre-release.
+## [Unreleased](https://github.com/plin-code/laravel-eloquent-sorts/compare/v1.0.0...1.x)
