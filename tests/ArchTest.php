@@ -12,9 +12,9 @@ arch('the support classes do not depend on spatie')
     ->not->toUse('Spatie\QueryBuilder')
     ->not->toUse('Spatie\LaravelPackageTools');
 
-arch('the package does not depend on the host application')
+arch('the package does not depend on the test workbench')
     ->expect('PlinCode\EloquentSorts')
-    ->not->toUse('App');
+    ->not->toUse('Workbench\App');
 
 arch('every class is final')
     ->expect('PlinCode\EloquentSorts')
