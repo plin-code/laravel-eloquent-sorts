@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "plin-code/laravel-eloquent-sorts",
-    "description": "Reusable Eloquent sorts: order by a relation column, by relation count, by a custom enum order. With adapters for spatie/laravel-query-builder.",
-    "keywords": ["PlinCode", "laravel", "eloquent", "sorting", "query-builder", "spatie"],
+    "description": "Reusable Eloquent sorts for Laravel: order by a relation column, by relation count, or by a custom enum order, with adapters for spatie/laravel-query-builder.",
+    "keywords": ["laravel", "eloquent", "sorting", "order-by", "relation", "enum", "query-builder", "spatie"],
     "homepage": "https://github.com/plin-code/laravel-eloquent-sorts",
     "license": "MIT",
     "authors": [

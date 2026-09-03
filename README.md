@@ -14,7 +14,7 @@
     <a href="https://packagist.org/packages/plin-code/laravel-eloquent-sorts"><img src="https://img.shields.io/packagist/dt/plin-code/laravel-eloquent-sorts.svg?style=flat-square" alt="Total Downloads"></a>
 </p>
 
-Reusable Eloquent sorts: order by a relation column, by relation count, by a custom enum order. With adapters for spatie/laravel-query-builder.
+Reusable Eloquent sorts for Laravel: order by a relation column, by relation count, or by a custom enum order, with adapters for spatie/laravel-query-builder.
 
 ## What it solves
 
